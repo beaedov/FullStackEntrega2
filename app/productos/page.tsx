@@ -8,11 +8,15 @@ function ItemProducto({ producto }) {
   const url_imagen = "/imagenes_productos/" + imagen ;
 
   return (
-    <div>
-      <img width={100} src={url_imagen} alt={producto.name} />
-      <br />
-      {producto.name} - {producto.price} - <br />
-      <Link className="underline" href={url}>ver detalles</Link>
+    <div className="col">
+      <div className="card h-100 shadow-sm">
+        <img src={url_imagen} alt={producto.name} className="card-img-top" style={{ height: 180, objectFit: "cover" }} />
+        <div className="card-body">
+          <h3 className="h6 card-title">{producto.name}</h3>
+          <p className="fw-bold text-primary">{producto.price}</p>
+          <Link className="btn btn-sm btn-outline-primary" href={url}>Ver detalles</Link>
+        </div>
+      </div>
     </div>
   )
 }
@@ -26,7 +30,7 @@ function ListaProductos({ productos }) {
     );
   });
   return (
-    <div className="grid h-56 grid-cols-3 content-start gap-4">
+    <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
       {lista}
     </div>
   );
@@ -38,13 +42,10 @@ export default async function Productos() {
   const response = await fetch(url);
   const productos = await response.json();
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+    <div className="container py-5">
 
-        <h2>
-          <ListaProductos productos={productos} />
-        </h2>
-      </main>
-    </div>
+        <h1 className="h2 mb-4">Productos</h1>
+        <ListaProductos productos={productos} />
+      </div>
   );
 }

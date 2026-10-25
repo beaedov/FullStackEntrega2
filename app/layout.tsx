@@ -1,43 +1,23 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import "./globals.css";
-import Link from "next/link"
-
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Mi tienda Maipú",
-  description: "Generado en clases",
+  title: "Radiadores del Puerto",
+  description: "Venta y reparación de radiadores",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
-        <nav>
-          <ul>
-            <li><Link href="/">Home</Link></li>
-            <li><Link href="/ofertas">ofertas</Link></li>
-            <li><Link href="/productos">productos</Link></li>
-            <li><Link href="/productos/verduras">verduras</Link></li>
-            <li><Link href="/nosotros">nosotros</Link></li>
-            <li><Link href="/contacto">contacto</Link></li>
-          </ul>
-        </nav>
-        {children}
-        </body>
+    <html lang="es">
+      <body className="d-flex flex-column min-vh-100 bg-light">
+        <Navbar />
+        <main className="flex-grow-1">{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }
