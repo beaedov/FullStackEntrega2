@@ -181,3 +181,8 @@ export function formatearPrecio(valor) {
   return "$" + Number(valor).toLocaleString("es-CL");
 }
 
+// Solo los productos que tienen precio de oferta
+export function obtenerProductosEnOferta() {
+  return obtenerProductos().filter((p) => p.precioOferta !== null);
+}
+
