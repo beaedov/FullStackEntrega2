@@ -17,7 +17,7 @@ const productosIniciales = [
     stock: 8,
     stockCritico: 3,
     descripcion: "Radiador de aluminio con estanques plásticos.",
-    imagen: "",
+    imagen: "toyotaRadiador.jpg",
   },
   {
     id: "2",
@@ -28,7 +28,7 @@ const productosIniciales = [
     stock: 2,
     stockCritico: 1,
     descripcion: "Radiador de cobre-bronce para uso pesado.",
-    imagen: "",
+    imagen: "camionRadiador.jpg",
   },
   {
     id: "3",
@@ -39,7 +39,7 @@ const productosIniciales = [
     stock: 25,
     stockCritico: 8,
     descripcion: "Refrigerante listo para usar, protege hasta -36 °C.",
-    imagen: "",
+    imagen: "refrigerante.jpg",
   },
   {
     id: "4",
@@ -50,7 +50,7 @@ const productosIniciales = [
     stock: 99,
     stockCritico: 0,
     descripcion: "Soldadura y sellado de fugas. Incluye prueba de presión.",
-    imagen: "",
+    imagen: "fugaRadiador.jpg",
   },
 ];
 
