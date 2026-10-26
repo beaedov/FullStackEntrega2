@@ -10,7 +10,6 @@ export default function Footer() {
         <div className="row g-4">
           <div className="col-md-4">
             <h5 className="fw-bold">
-              <i className="bi bi-thermometer-snow text-info me-2"></i>
               Radiadores del Puerto
             </h5>
             <p className="text-secondary mb-0">

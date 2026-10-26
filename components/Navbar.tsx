@@ -24,7 +24,6 @@ export default function Navbar() {
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
       <div className="container">
         <Link className="navbar-brand fw-bold" href="/" onClick={() => setAbierto(false)}>
-          <i className="bi bi-thermometer-snow text-info me-2"></i>
           Radiadores del Puerto
         </Link>
 

@@ -54,8 +54,12 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-            <div className="col-lg-5 text-center d-none d-lg-block">
-              <i className="bi bi-thermometer-snow" style={{ fontSize: "12rem", opacity: 0.85 }}></i>
+            <div className="col-lg-5 text-center">
+              <img
+                src="/RDP.jpg"
+                alt="Radiadores del Puerto"
+                className="img-fluid rounded shadow"
+              />
             </div>
           </div>
         </div>
