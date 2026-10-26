@@ -1,31 +1,89 @@
+"use client";
 
-export const instant = false;
-import { notFound } from "next/navigation"
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { type Producto } from "@/components/TarjetaProducto";
+import { formatearPrecio, obtenerProducto, obtenerPorId } from "@/data/datos";
 
-// debe ser asincrono (async) para poder esperar la respuesta de la API
-export default async function Producto({ params }) {
-    const { slug } = await params;
-    const url = "http://localhost:4000/products/" + slug;
-    const response = await fetch(url);
-    const producto = await response.json();
-    const imagen = producto.image_name? producto.image_name : "producto_sin_foto.png";
-    const url_imagen = "/imagenes_productos/" + imagen ;
+export default function DetalleProducto() {
+  // Si la URL es /productos/3, entonces slug = "3"
+  const { slug } = useParams<{ slug: string }>();
 
-    if (!producto.id) {
-        notFound();
-    }
-    else {
-        return (
-            <div className="container py-5">
+  const [producto, setProducto] = useState<Producto | null>(null);
+  const [cargando, setCargando] = useState(true);
 
-                    <h2>
-                        {producto.name}  - {producto.price}
-                        <br />
-                        Hay en stock : {producto.stocked? "Si" : "No"}
-                    </h2>
-                    <img width={300} src={url_imagen} alt={producto.name} />
+  useEffect(() => {
+    const encontrado = obtenerProducto(slug);
+    setProducto(encontrado ?? null);
+    setCargando(false);
+  }, [slug]);
 
-                </div>
-        );
-    }
+  // Mientras busca el producto
+  if (cargando) {
+    return (
+      <div className="container py-5 text-center">
+        <div className="spinner-border text-primary" role="status"></div>
+      </div>
+    );
+  }
+
+  // Si el producto no existe
+  if (!producto) {
+    return (
+      <div className="container py-5">
+        <div className="alert alert-warning">El producto que buscas no existe.</div>
+        <Link href="/productos" className="btn btn-primary">Volver a productos</Link>
+      </div>
+    );
+  }
+
+  // Si lo encontró, muestra el detalle
+  const categoria = obtenerPorId("categorias", producto.categoriaId);
+  const enOferta = producto.precioOferta !== null;
+  const imagen = producto.imagen ? producto.imagen : "producto_sin_foto.png";
+
+  return (
+    <div className="container py-5">
+      <Link href="/productos" className="btn btn-link px-0 mb-3">
+        <i className="bi bi-arrow-left me-1"></i>Volver a productos
+      </Link>
+
+      <div className="row g-4">
+        <div className="col-md-6">
+          <img
+            src={"/imagenes_productos/" + imagen}
+            alt={producto.nombre}
+            className="img-fluid rounded shadow-sm w-100"
+          />
+        </div>
+
+        <div className="col-md-6">
+          {categoria && <span className="badge bg-secondary mb-2">{categoria.nombre}</span>}
+          <h1 className="h3">{producto.nombre}</h1>
+
+          {enOferta ? (
+            <p className="fs-4">
+              <span className="text-decoration-line-through text-secondary me-2">
+                {formatearPrecio(producto.precio)}
+              </span>
+              <span className="fw-bold text-danger">{formatearPrecio(producto.precioOferta)}</span>
+            </p>
+          ) : (
+            <p className="fs-4 fw-bold text-primary">{formatearPrecio(producto.precio)}</p>
+          )}
+
+          <p>{producto.descripcion}</p>
+
+          <p className={producto.stock > 0 ? "text-success" : "text-danger"}>
+            {producto.stock > 0 ? `Disponible: ${producto.stock} unidades` : "Sin stock"}
+          </p>
+
+          <button className="btn btn-success btn-lg" disabled={producto.stock === 0}>
+            <i className="bi bi-cart-plus me-2"></i>Añadir al carrito
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
