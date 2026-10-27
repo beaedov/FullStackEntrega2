@@ -8,6 +8,7 @@ import { useState } from "react";
 const enlaces = [
   { href: "/", texto: "Inicio" },
   { href: "/productos", texto: "Productos" },
+  { href: "/categorias", texto: "Categorías" },
   { href: "/ofertas", texto: "Ofertas" },
   { href: "/nosotros", texto: "Nosotros" },
   { href: "/blog", texto: "Blog" },
