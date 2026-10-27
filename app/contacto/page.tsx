@@ -7,7 +7,7 @@ export default function Contacto() {
       </p>
 
       <div className="row g-4">
-        {/* Columna izquierda*/}
+        {}
         <div className="col-12 col-lg-5">
           <div className="card h-100 border-0 shadow-sm p-4">
             <h2 className="h5 mb-3">Radiadores del Puerto</h2>
