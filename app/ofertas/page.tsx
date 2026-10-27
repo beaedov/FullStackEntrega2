@@ -1,16 +1,10 @@
-"use client";
+import TarjetaProducto from "@/components/TarjetaProducto";
+import { productos } from "@/data/datos";
 
-import { useEffect, useState } from "react";
-import TarjetaProducto, { type Producto } from "@/components/TarjetaProducto";
-import { obtenerProductosEnOferta } from "@/data/datos";
+// Solo los productos que tienen precio de oferta
+const ofertas = productos.filter((producto) => producto.precioOferta !== null);
 
 export default function Ofertas() {
-  const [ofertas, setOfertas] = useState<Producto[]>([]);
-
-  useEffect(() => {
-    setOfertas(obtenerProductosEnOferta());
-  }, []);
-
   return (
     <div className="container py-5">
       <h1 className="h2">
@@ -18,15 +12,11 @@ export default function Ofertas() {
       </h1>
       <p className="text-secondary mb-4">Precios rebajados en radiadores y repuestos.</p>
 
-      {ofertas.length === 0 ? (
-        <div className="alert alert-info">Por ahora no tenemos productos en oferta.</div>
-      ) : (
-        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-          {ofertas.map((producto) => (
-            <TarjetaProducto key={producto.id} producto={producto} />
-          ))}
-        </div>
-      )}
+      <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        {ofertas.map((producto) => (
+          <TarjetaProducto key={producto.id} producto={producto} />
+        ))}
+      </div>
     </div>
   );
 }

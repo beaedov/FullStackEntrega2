@@ -2,7 +2,7 @@ import Link from "next/link";
 
 // Pie de página que se muestra en todas las vistas de la tienda
 export default function Footer() {
-  const anio = new Date().getFullYear();
+  const anio = 2026;
 
   return (
     <footer className="bg-dark text-light pt-5 pb-3 mt-auto">

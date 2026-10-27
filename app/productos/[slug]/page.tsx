@@ -1,47 +1,24 @@
-"use client";
-
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { type Producto } from "@/components/TarjetaProducto";
-import { formatearPrecio, obtenerProducto, obtenerPorId } from "@/data/datos";
+import { notFound } from "next/navigation";
+import { formatearPrecio } from "@/data/datos";
+import { productos } from "@/data/datos";
 
-export default function DetalleProducto() {
-  // Si la URL es /productos/3, entonces slug = "3"
-  const { slug } = useParams<{ slug: string }>();
+export const instant = false;
 
-  const [producto, setProducto] = useState<Producto | null>(null);
-  const [cargando, setCargando] = useState(true);
+// Le dice a Next qué productos existen
+export function generateStaticParams() {
+  return productos.map((producto) => ({ slug: producto.id }));
+}
 
-  useEffect(() => {
-    const encontrado = obtenerProducto(slug);
-    setProducto(encontrado ?? null);
-    setCargando(false);
-  }, [slug]);
+export default async function DetalleProducto({ params }: PageProps<"/productos/[slug]">) {
+  const { slug } = await params;
+  const producto = productos.find((p) => p.id === slug);
 
-  // Mientras busca el producto
-  if (cargando) {
-    return (
-      <div className="container py-5 text-center">
-        <div className="spinner-border text-primary" role="status"></div>
-      </div>
-    );
-  }
-
-  // Si el producto no existe
   if (!producto) {
-    return (
-      <div className="container py-5">
-        <div className="alert alert-warning">El producto que buscas no existe.</div>
-        <Link href="/productos" className="btn btn-primary">Volver a productos</Link>
-      </div>
-    );
+    notFound();
   }
 
-  // Si lo encontró, muestra el detalle
-  const categoria = obtenerPorId("categorias", producto.categoriaId);
-  const enOferta = producto.precioOferta !== null;
-  const imagen = producto.imagen ? producto.imagen : "producto_sin_foto.png";
+  const categoria = categorias.find((c) => c.id === producto.categoriaId);
 
   return (
     <div className="container py-5">
@@ -52,17 +29,17 @@ export default function DetalleProducto() {
       <div className="row g-4">
         <div className="col-md-6">
           <img
-            src={"/imagenes_productos/" + imagen}
+            src={"/imagenes_productos/" + producto.imagen}
             alt={producto.nombre}
             className="img-fluid rounded shadow-sm w-100"
           />
         </div>
 
         <div className="col-md-6">
-          {categoria && <span className="badge bg-secondary mb-2">{categoria.nombre}</span>}
+          <span className="badge bg-secondary mb-2">{categoria?.nombre}</span>
           <h1 className="h3">{producto.nombre}</h1>
 
-          {enOferta ? (
+          {producto.precioOferta ? (
             <p className="fs-4">
               <span className="text-decoration-line-through text-secondary me-2">
                 {formatearPrecio(producto.precio)}
@@ -74,12 +51,9 @@ export default function DetalleProducto() {
           )}
 
           <p>{producto.descripcion}</p>
+          <p className="text-success">Disponible: {producto.stock} unidades</p>
 
-          <p className={producto.stock > 0 ? "text-success" : "text-danger"}>
-            {producto.stock > 0 ? `Disponible: ${producto.stock} unidades` : "Sin stock"}
-          </p>
-
-          <button className="btn btn-success btn-lg" disabled={producto.stock === 0}>
+          <button className="btn btn-success btn-lg">
             <i className="bi bi-cart-plus me-2"></i>Añadir al carrito
           </button>
         </div>

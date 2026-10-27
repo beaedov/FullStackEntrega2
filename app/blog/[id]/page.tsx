@@ -1,21 +1,20 @@
-"use client";
-
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { obtenerArticulo } from "@/data/blog";
+import { notFound } from "next/navigation";
+import { articulos } from "@/data/blog";
 
-export default function DetalleBlog() {
-  const { id } = useParams<{ id: string }>();
-  const articulo = obtenerArticulo(id);
+export const instant = false;
 
-  // Si el artículo no existe
+// Le dice a Next qué artículos existen (/blog/1, /blog/2...)
+export function generateStaticParams() {
+  return articulos.map((articulo) => ({ id: articulo.id }));
+}
+
+export default async function DetalleBlog({ params }: PageProps<"/blog/[id]">) {
+  const { id } = await params;
+  const articulo = articulos.find((a) => a.id === id);
+
   if (!articulo) {
-    return (
-      <div className="container py-5">
-        <div className="alert alert-warning">El artículo que buscas no existe.</div>
-        <Link href="/blog" className="btn btn-primary">Volver al blog</Link>
-      </div>
-    );
+    notFound();
   }
 
   return (
@@ -30,7 +29,6 @@ export default function DetalleBlog() {
       {articulo.contenido.map((parrafo, i) => (
         <p key={i} className="lh-lg">{parrafo}</p>
       ))}
-
     </div>
   );
 }
