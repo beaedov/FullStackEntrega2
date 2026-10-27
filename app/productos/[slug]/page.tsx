@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { formatearPrecio } from "@/data/datos";
-import { productos } from "@/data/datos";
+import { categorias, productos, formatearPrecio } from "@/data/datos";
 
 export const instant = false;
 
-// Le dice a Next qué productos existen
+// Le dice a Next qué productos existen (/productos/1, /productos/2...)
 export function generateStaticParams() {
   return productos.map((producto) => ({ slug: producto.id }));
 }
